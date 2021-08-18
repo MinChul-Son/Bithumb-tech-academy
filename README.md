@@ -6,4 +6,6 @@
 * MongoDB 설치
 * Spring과 MongoDB 연동
 * Spring Data MongoDB 간단히 사용해보기
+* Docker Hub에서 도커 이미지 내려받기
+* 컨테이너 생성
 
