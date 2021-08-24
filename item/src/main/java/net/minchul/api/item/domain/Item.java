@@ -1,18 +1,21 @@
 package net.minchul.api.item.domain;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.minchul.api.order.domain.Order;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
 @Data
 @Table(name = "items")
 public class Item {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "item_id")
     private long itemId;
 
