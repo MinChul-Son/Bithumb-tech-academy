@@ -1,6 +1,7 @@
 package net.minchul.api.item.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.minchul.api.order.domain.Order;
@@ -13,6 +14,7 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "items")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,4 +41,11 @@ public class Item {
 
     @OneToMany(mappedBy = "item")
     private List<Order> orders = new ArrayList<>();
+
+    @Builder
+    public Item(String itemBrand, String itemName, String itemColor) {
+        this.itemBrand = itemBrand;
+        this.itemName = itemName;
+        this.itemColor = itemColor;
+    }
 }

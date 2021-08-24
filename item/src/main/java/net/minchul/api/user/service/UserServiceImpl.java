@@ -3,6 +3,7 @@ package net.minchul.api.user.service;
 import lombok.RequiredArgsConstructor;
 import net.minchul.api.user.domain.User;
 import net.minchul.api.user.repository.UserRepository;
+import net.minchul.api.util.Proxy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -19,5 +19,7 @@ public interface ItemService {
 
     void deleteById(long id);
 
+    void deleteAll();
+
     void save(Item item);
 }
