@@ -28,3 +28,10 @@
 * `MariaDB` 설치 및 `Spring Boot`와 연동
 * `Spring Data JPA` 사용한 `CRUD`
 
+### 8/23
+* `Spring MVC`, `@RestController`
+* `Design Pattern`
+* `Swagger2(Springfox)`
+* `CORS`, `@CrossOrigin`
+
+
