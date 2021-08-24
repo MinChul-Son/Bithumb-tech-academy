@@ -1,11 +1,10 @@
 package net.minchul.api.order.domain;
 
 import lombok.Data;
+import net.minchul.api.item.domain.Item;
+import net.minchul.api.user.domain.User;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -21,4 +20,12 @@ public class Order {
 
     @Column(name = "order_status")
     private String count;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id")
+    private Item item;
 }

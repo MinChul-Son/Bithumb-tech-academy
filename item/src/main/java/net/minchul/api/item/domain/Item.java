@@ -1,11 +1,11 @@
 package net.minchul.api.item.domain;
 
 import lombok.Data;
+import net.minchul.api.order.domain.Order;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -33,4 +33,7 @@ public class Item {
 
     @Column(name = "sold_out")
     private Boolean soldOut;
+
+    @OneToMany(mappedBy = "item")
+    private List<Order> orders = new ArrayList<>();
 }
