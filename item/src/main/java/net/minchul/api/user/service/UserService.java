@@ -1,6 +1,7 @@
 package net.minchul.api.user.service;
 
 import net.minchul.api.user.domain.User;
+import net.minchul.api.user.domain.UserDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,4 +20,8 @@ public interface UserService {
     void deleteById(long id);
 
     void save(User user);
+
+    String signUp(User user);
+
+    UserDto signIn(User user);
 }
