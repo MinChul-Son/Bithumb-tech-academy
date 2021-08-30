@@ -2,6 +2,9 @@ package net.minchul.api.security.aop;
 
 import lombok.RequiredArgsConstructor;
 import net.minchul.api.security.domain.SecurityProvider;
+import net.minchul.api.security.exception.SecurityRuntimeException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -18,10 +21,29 @@ public class SecurityFilter extends OncePerRequestFilter {
      *  filter를 통해 jwt 토큰이 맞는지 검증
      */
 
-    private final SecurityProvider provider; 
+    private SecurityProvider provider;
+
+    public SecurityFilter(SecurityProvider provider) {
+        this.provider = provider;
+    }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//        String token = provider
+    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+        String token = provider.resolveToken(httpServletRequest);
+        try {
+            if (token != null && provider.validateToken(token)) {
+                Authentication auth = provider.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+        } catch (SecurityRuntimeException ex) {
+            //this is very important, since it guarantees the user is not authenticated at all
+            SecurityContextHolder.clearContext();
+            httpServletResponse.sendError(ex.getHttpStatus().value(), ex.getMessage());
+            return;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }
