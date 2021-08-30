@@ -3,6 +3,7 @@ package net.michul.api.quiz.service;
 import lombok.RequiredArgsConstructor;
 import net.michul.api.quiz.domain.Quiz;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
@@ -10,10 +11,10 @@ public class QuizService {
 
     private final GeneratorService generatorService;
 
-    public Quiz createQuiz() {
-        return new Quiz(
-                generatorService.randomFactor(),
-                generatorService.randomFactor()
-        );
+    public Mono<Quiz> createQuiz() {
+        int factorA = generatorService.randomFactor();
+        int factorB = generatorService.randomFactor();
+        Quiz quiz = new Quiz(factorA, factorB);
+        return Mono.just(quiz);
     }
 }
