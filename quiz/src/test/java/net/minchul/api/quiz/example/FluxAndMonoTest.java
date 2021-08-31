@@ -5,6 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.Signal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -105,5 +107,46 @@ public class FluxAndMonoTest {
         Flux<String> flux = Flux.empty();
         flux.subscribe(list::add);
         assertThat(list).isEmpty();
+    }
+
+    @DisplayName("Mono.just() 예제")
+    @Test
+    void monoJust() {
+        /**
+         * Reactive Stream 에서는 Data, Event, Signal 중에서 Signal 을 사용한다.
+         * onNext, onComplete, onError
+         * */
+        List<Signal<Integer>> list = new ArrayList<>(4);
+        final Integer[] result = new Integer[1];
+        Mono<Integer> mono = Mono.just(1).log()
+                .doOnEach(i -> {
+                    list.add(i);
+                    System.out.println("Signal = " + i);
+                });
+        mono.subscribe(i -> result[0] = i);
+        assertThat(list.size()).isEqualTo(2);
+        assertThat(list.get(0).getType().name()).isEqualTo("ON_NEXT");
+        assertThat(list.get(1).getType().name()).isEqualTo("ON_COMPLETE");
+        assertThat(result[0].intValue()).isEqualTo(1);
+    }
+
+    @DisplayName("Mono.empty() 예제")
+    @Test
+    void monoEmpty() {
+        List<String> list = new ArrayList<>();
+        Mono<String> mono = Mono.empty();
+        mono.subscribe(list::add);
+        assertThat(list).isEmpty();
+    }
+
+    @DisplayName("Mono.just 예제2")
+    @Test
+    void monoJust2() {
+        System.out.println("------ Mono.empty() ------");
+        Mono.empty().subscribe(System.out::print);
+        System.out.println("------ Mono.just() ------");
+        Mono.just("Java")
+                .map(item -> "Mono item: " + item)
+                .subscribe(System.out::print);
     }
 }
