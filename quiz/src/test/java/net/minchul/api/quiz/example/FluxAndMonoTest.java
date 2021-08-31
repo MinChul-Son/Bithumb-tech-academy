@@ -1,8 +1,11 @@
 package net.minchul.api.quiz.example;
 
+import net.minchul.api.quiz.config.CustomException;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
@@ -15,6 +18,18 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 public class FluxAndMonoTest {
+
+    @Mock
+    CustomException customExceptionMono;
+
+    @Mock
+    CustomException customExceptionFlux;
+
+    @BeforeEach
+    void setUp() {
+        customExceptionMono = new CustomException("Mono");
+        customExceptionFlux = new CustomException("Flux");
+    }
 
     @DisplayName("Flux.just() 예제")
     @Test
@@ -148,5 +163,16 @@ public class FluxAndMonoTest {
         Mono.just("Java")
                 .map(item -> "Mono item: " + item)
                 .subscribe(System.out::print);
+    }
+
+    @DisplayName("Mono Flux error() 예제")
+    @Test
+    void error() {
+        Mono.error(customExceptionMono)
+                .doOnError(e -> System.out.println("Mono inside doOnError"))
+                .subscribe();
+        Flux.error(customExceptionFlux)
+                .doOnError(e -> System.out.println("Flux inside doOnError"))
+                .subscribe();
     }
 }
