@@ -66,3 +66,7 @@
 * `Kafka`, `Zookeeper`
   - `Producer`
   - `Consumer`  
+
+### 9/1
+* `Kafka` & `Docker`
+* `MongoDB`
